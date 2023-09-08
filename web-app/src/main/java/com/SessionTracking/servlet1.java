@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,9 +34,11 @@ public class servlet1 extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
-		String name = request.getParameter("name");
-		out.print("<h1> Hello, "+ name +"Welcome .... </h1>");
+		String name = request.getParameter("user_name");
+		out.print("<h1> Hello, "+ name +" Welcome .... </h1>");
 		out.print("<h1> <a href='servlet2'> Go to servlet2 </a></h1>");
+		Cookie cookie = new Cookie("user_name", name);
+		response.addCookie(cookie);
 	}
 
 }

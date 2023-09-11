@@ -1,11 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
 <title>Insert title here</title>
-<!-- Compiled and minified CSS -->
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
@@ -21,8 +18,9 @@
 				<div class="card">
 					<div class="card-content">
 						<h3 class="center-align">Register here!!!</h3>
+						<h5 id="msg" class="center-align"></h5>
 						<div class="form center-align">
-							<form action="register" method="post">
+							<form action="register" method="post" id="myform">
 								<input type="text" placeholder="Enter user name" name="name">
 								<input type="password" placeholder="Enter password"
 									name="password"> <input type="email"
@@ -96,7 +94,40 @@
 		
 		<script>
 		$(document).ready(function(){
-			console.log("hiiii")
+			
+			$("#myform").on('submit',function(event){
+				event.preventDefault();
+				var f=$(this).serialize();
+
+				$(".loader").show();
+				$(".form").hide();
+				
+				$.ajax({
+					url: "register",
+					data: f,
+					type: 'POST',
+					success: function(data,textStatus,jqXHR) {
+						$(".loader").hide();
+				        $(".form").show();
+				        
+				        if(data.trim()=="done"){
+							$("#msg").addClass('green-text');
+							$("#msg").html("Succesfully Registered");
+						}
+						else{
+							$("#msg").addClass('red-text');
+							$("#msg").html("Something went wrong on server");
+						}
+					},
+					error: function(jqXHR,textStatus,errorThrown){
+						$(".loader").hide();
+				        $(".form").show();
+				        
+				        $("#msg").addClass('red-text');
+				        $("#msg").html("Something went wrong on server");
+					}
+				})
+			})
 		})</script>
 </body>
 </html>
